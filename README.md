@@ -1,65 +1,150 @@
-# EncontreUmJiuJiteiro API — ambiente Docker
+# 🥋 EncontreUmJiuJiteiro
 
-Ambiente local com Laravel/PHP-FPM, Nginx, MySQL, Redis, phpMyAdmin e Redis Insight.
+<p align="center">
+  <strong>Conectando praticantes de Jiu-Jitsu através da localização.</strong>
+</p>
 
-## Requisitos
+<p align="center">
+  Encontre pessoas que compartilham a mesma paixão pelo Jiu-Jitsu,
+  descubra praticantes próximos e fortaleça a comunidade da arte suave.
+</p>
 
-- Ubuntu 24.04
-- Docker Engine
-- Docker Compose plugin (`docker compose`)
-- Git
+---
 
-## 1. Preparar variáveis do Docker
+## 📖 Sobre o projeto
 
-Na raiz do projeto:
+O **EncontreUmJiuJiteiro** é uma plataforma que tem como objetivo aproximar praticantes de Jiu-Jitsu por meio da localização geográfica.
+
+A proposta é permitir que praticantes encontrem outras pessoas que treinam Jiu-Jitsu nas proximidades, facilitando conexões, amizades, treinos e o fortalecimento da comunidade.
+
+Imagine estar viajando para outra cidade e conseguir descobrir quem treina Jiu-Jitsu naquela região. Ou encontrar pessoas próximas para compartilhar experiências, combinar treinos e ampliar sua rede de contatos dentro do esporte.
+
+É essa experiência que queremos proporcionar.
+
+## 🎯 Objetivos
+
+- 📍 **Descobrir praticantes próximos:** localizar pessoas que praticam Jiu-Jitsu em determinada região.
+- 🤝 **Conectar a comunidade:** facilitar o contato entre praticantes.
+- 🥋 **Incentivar novos treinos:** aproximar pessoas interessadas em treinar juntas.
+- 🌎 **Conectar diferentes regiões:** permitir que praticantes encontrem outros atletas mesmo quando estiverem viajando.
+- ⚡ **Localização em tempo real:** possibilitar a visualização de praticantes que optarem por compartilhar sua localização.
+
+## 💡 Como a plataforma pretende funcionar?
+
+A experiência será baseada em localização geográfica e compartilhamento voluntário.
+
+1. O usuário cria sua conta e configura seu perfil.
+2. Quando desejar, ativa o compartilhamento de localização.
+3. A aplicação recebe as coordenadas geográficas do dispositivo.
+4. As coordenadas mais recentes são disponibilizadas para consultas geográficas.
+5. Outros usuários podem visualizar praticantes próximos em um mapa.
+6. O usuário pode desativar o compartilhamento quando quiser.
+
+## 🚀 Como executar o projeto
+
+Este guia apresenta os passos para configurar e executar o ambiente de desenvolvimento local utilizando Docker.
+
+### 1. Pré-requisitos
+
+Antes de começar, você precisa ter instalado:
+- Git.
+- Docker Engine.
+- Docker Compose Plugin (`docker compose`).
+
+Para verificar se o Docker está instalado:
 
 ```bash
-cp .env.docker.example .env
+docker --version
+docker compose version
+```
+
+### 2. Clonar o repositório
+
+Clone o projeto:
+
+```bash
+git clone https://github.com/JonasMoria/EncontreUmJiuJiteiro.git
+```
+
+Entre no diretório:
+
+```bash
+cd EncontreUmJiuJiteiro
+```
+
+### 3. Configurar as variáveis de ambiente do Docker
+
+Na raiz do projeto, copie o arquivo de exemplo:
+
+```bash
+cp .env.example .env
+```
+
+O arquivo `.env` contém as configurações utilizadas pelo Docker Compose.
+
+Atualize as permissões do usuário Linux:
+
+```bash
+sed -i "s/DOCKER_UID=1000/DOCKER_UID=$(id -u)/" .env
+sed -i "s/DOCKER_GID=1000/DOCKER_GID=$(id -g)/" .env
+```
+
+Abra o arquivo:
+
+```bash
 nano .env
 ```
 
-Ajuste `DOCKER_UID` e `DOCKER_GID` com os valores retornados por:
+Configure as senhas do MySQL e Redis, substituindo os valores de exemplo.
 
-```bash
-id -u
-id -g
-```
+### 4. Construir as imagens Docker
 
-Use esses valores para que os arquivos criados pelo PHP/Composer no container pertençam ao seu usuário Linux. Se seus IDs forem diferentes de 1000, atualize o `.env` antes de construir a imagem.
-
-Troque também as senhas de desenvolvimento do MySQL e Redis.
-
-## 2. Criar o diretório da aplicação
-
-```bash
-mkdir -p src
-```
-
-## 3. Construir as imagens
+Execute:
 
 ```bash
 docker compose build
 ```
 
-## 4. Criar o projeto Laravel
+Esse comando construirá a imagem da aplicação PHP.
 
-O comando abaixo executa o Composer no container usando o UID/GID configurado:
+### 5. Instalar o Laravel
+
+O código-fonte da aplicação ficará dentro do diretório `src`.
+
+Crie o diretório, caso ainda não exista:
+
+```bash
+mkdir -p src
+```
+
+Instale o Laravel utilizando o Composer dentro do container:
 
 ```bash
 docker compose run --rm --no-deps app composer create-project laravel/laravel .
 ```
 
-Se `src` já contiver uma aplicação Laravel, não execute esse comando.
+> Se o diretório `src` já possuir uma aplicação Laravel, não execute novamente esse comando.
 
-## 5. Configurar o Laravel
+### 6. Configurar o ambiente Laravel
+
+Copie o arquivo de exemplo criado pelo Laravel:
 
 ```bash
 cp src/.env.example src/.env
 ```
 
-No arquivo `src/.env`, configure:
+Abra o arquivo:
+
+```bash
+nano src/.env
+```
+
+Configure pelo menos as seguintes variáveis:
 
 ```dotenv
+APP_NAME=EncontreUmJiuJiteiro
+APP_ENV=local
+APP_DEBUG=true
 APP_URL=http://localhost:8080
 
 DB_CONNECTION=mysql
@@ -67,78 +152,66 @@ DB_HOST=mysql
 DB_PORT=3306
 DB_DATABASE=jiujiteiro
 DB_USERNAME=jiujiteiro
-DB_PASSWORD=local_mysql_password
+DB_PASSWORD=sua_senha_mysql
 
 REDIS_CLIENT=phpredis
 REDIS_HOST=redis
-REDIS_PASSWORD=local_redis_password
+REDIS_PASSWORD=sua_senha_redis
 REDIS_PORT=6379
 ```
 
-Use exatamente as senhas definidas no `.env` da raiz.
+Utilize os mesmos valores de banco e Redis definidos no `.env` da raiz.
 
-Gere a chave e execute as migrations:
+### 7. Gerar a chave da aplicação
+
+Execute:
 
 ```bash
 docker compose run --rm --no-deps app php artisan key:generate
-docker compose up -d
-docker compose exec app php artisan migrate
 ```
 
-Se o Laravel instalado trouxer variáveis adicionais de cache ou sessão, mantenha-as de acordo com a configuração desejada. Para este ambiente, a conexão Redis está disponível pelo host `redis`.
+Esse comando gera a chave de criptografia utilizada pelo Laravel.
 
-## 6. Endereços locais
+### 8. Iniciar os containers
 
-- API: http://localhost:8080
-- phpMyAdmin: http://localhost:8081
-- Redis Insight: http://localhost:5540
-
-No Redis Insight, adicione uma conexão:
-- Host: `redis`
-- Port: `6379`
-- Username: deixe vazio (usuário default)
-- Password: valor de `REDIS_PASSWORD` no `.env` da raiz
-
-No phpMyAdmin, use:
-- Servidor: `mysql`
-- Usuário: valor de `MYSQL_USER` ou `root`
-- Senha: a correspondente no `.env` da raiz
-
-## Comandos úteis
+Agora inicie os serviços:
 
 ```bash
 docker compose up -d
-docker compose down
+```
+
+Para verificar se todos os containers estão funcionando:
+
+```bash
 docker compose ps
-docker compose logs -f app
-docker compose logs -f nginx
-docker compose exec app bash
+```
+
+### 9. Executar as migrations
+
+Com os containers em execução:
+
+```bash
 docker compose exec app php artisan migrate
-docker compose exec app composer install
 ```
 
-Para apagar containers e redes, preservando os dados dos volumes:
+Pronto! Seu ambiente de desenvolvimento estará disponível.
 
-```bash
-docker compose down
-```
+---
 
-Para apagar também os dados persistidos de MySQL, Redis e Redis Insight:
+## 🌐 Acessos locais
 
-```bash
-docker compose down -v
-```
+Após iniciar os containers, você poderá acessar os serviços:
 
-**Atenção:** `down -v` apaga permanentemente os dados dos volumes deste projeto.
+| Serviço | Endereço |
+|---|---|
+| API Laravel | http://localhost:8080 |
+| phpMyAdmin | http://localhost:8081 |
+| Redis Insight | http://localhost:5540 |
 
-## Observações sobre permissões
+As portas podem ser alteradas no `.env` da raiz.
 
-- O serviço `app` executa com o UID/GID configurado em `.env`.
-- O código é montado em `./src`, portanto permanece na máquina local.
-- Não use `sudo` para criar arquivos dentro de `src`.
-- Se mudar o UID/GID depois de criar arquivos, talvez seja necessário corrigir a propriedade uma única vez no host.
-- O Nginx monta o código como somente leitura.
-
-## Observações de segurança
-
-Este Compose é para desenvolvimento local. As portas do MySQL e Redis são publicadas somente em `127.0.0.1`. Não exponha phpMyAdmin, Redis Insight, MySQL ou Redis diretamente à internet em produção. Use senhas fortes e uma configuração de produção separada.
+<p align="center">
+  Desenvolvido com 🥋 e tecnologia.
+  <br>
+  <strong>EncontreUmJiuJiteiro</strong>
+</p>
