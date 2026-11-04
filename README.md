@@ -222,6 +222,20 @@ Na raiz do repositório, execute:
 composer --working-dir=src cs-fix
 ```
 
+## Qualidade de código — Larastan
+
+O projeto utiliza o [Larastan](https://github.com/larastan/larastan), uma extensão do PHPStan para análise estática de aplicações Laravel. Ele identifica possíveis problemas no código, como variáveis indefinidas, incompatibilidades de tipos, retornos incorretos e problemas relacionados ao Eloquent.
+
+A configuração fica em `src/phpstan.neon` e o script de execução em `src/scripts/run-larastan.sh`.
+
+### Executar a análise
+
+Na raiz do repositório, execute:
+
+```bash
+composer --working-dir=src larastan
+```
+
 <p align="center">
   Desenvolvido com 🥋 e tecnologia.
   <br>
