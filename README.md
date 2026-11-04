@@ -210,6 +210,18 @@ Após iniciar os containers, você poderá acessar os serviços:
 
 As portas podem ser alteradas no `.env` da raiz.
 
+## Qualidade de código — PHP CS Fixer
+
+O projeto utiliza o [PHP CS Fixer](https://github.com/PHP-CS-Fixer/PHP-CS-Fixer) para padronizar automaticamente o código PHP. A configuração fica em `src/.php-cs-fixer.dist.php` e o script de execução em `src/scripts/run-cs-fix.sh`.
+
+### Executar a formatação
+
+Na raiz do repositório, execute:
+
+```bash
+composer --working-dir=src cs-fix
+```
+
 <p align="center">
   Desenvolvido com 🥋 e tecnologia.
   <br>
