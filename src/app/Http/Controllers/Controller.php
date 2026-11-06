@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-abstract class Controller
-{
-    //
+use App\Http\Traits\HttpResponse;
+
+abstract class Controller {
+    use HttpResponse;
 }
