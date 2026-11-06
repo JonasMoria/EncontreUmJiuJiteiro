@@ -18,6 +18,8 @@ class UserModel extends Authenticatable {
     use HasApiTokens;
     use Notifiable;
 
+    protected $table = 'users';
+
     protected $fillable = [
         'name',
         'email',
