@@ -6,7 +6,7 @@ use App\Http\Enums\HttpStatusCode;
 use Illuminate\Http\JsonResponse;
 
 trait HttpResponse {
-    public static function make(
+    public static function makeResponse(
         string $message,
         HttpStatusCode $httpCode,
         array $data = []

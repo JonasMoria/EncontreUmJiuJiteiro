@@ -27,7 +27,7 @@ return Application::configure(basePath: dirname(__DIR__))
             FormRequestException $exception,
             Request $request,
         ) {
-            return HttpResponse::make(
+            return HttpResponse::makeResponse(
                 $exception->getMessage(),
                 HttpStatusCode::from($exception->getCode())
             );
