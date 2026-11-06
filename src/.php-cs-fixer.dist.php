@@ -35,6 +35,9 @@ return (new PhpCsFixer\Config())
         'trailing_comma_in_multiline' => [
             'elements' => ['arrays'],
         ],
+
+        // Remove use's de classe não utilizadas
+        'no_unused_imports' => true,
     ])
     ->setFinder($finder)
     ->setCacheFile(__DIR__ . '/.php-cs-fixer.cache');
