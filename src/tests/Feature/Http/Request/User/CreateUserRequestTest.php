@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Http\Requests\User;
+namespace Tests\Feature\Http\Request\User;
 
 use App\Http\Requests\User\CreateUserRequest;
 use Illuminate\Support\Facades\Validator;
