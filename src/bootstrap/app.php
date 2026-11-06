@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Enums\HttpStatusCode;
+use App\Http\Exceptions\FormRequestException;
+use App\Http\Traits\HttpResponse;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -19,4 +22,14 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
         );
+
+        $exceptions->render(function (
+            FormRequestException $exception,
+            Request $request,
+        ) {
+            return HttpResponse::make(
+                $exception->getMessage(),
+                HttpStatusCode::from($exception->getCode())
+            );
+        });
     })->create();
