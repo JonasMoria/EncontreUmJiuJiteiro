@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests\User;
 
+use App\Http\Requests\AppFormRequest;
 use App\Rules\StrongPasswordRule;
-use Illuminate\Foundation\Http\FormRequest;
 
-class CreateUserRequest extends FormRequest {
+class CreateUserRequest extends AppFormRequest {
     public function authorize(): bool {
         return true;
     }
