@@ -12,6 +12,8 @@ services:
     user: "${DOCKER_UID}:${DOCKER_GID}"
     volumes:
       - ./src:/var/www/html
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
       APP_ENV: local
       DB_CONNECTION: mysql

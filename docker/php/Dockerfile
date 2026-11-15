@@ -27,9 +27,14 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 RUN groupadd --gid "${APP_GID}" app \
     && useradd --uid "${APP_UID}" --gid "${APP_GID}" --create-home --shell /bin/bash app
 
+RUN pecl install xdebug \
+    && docker-php-ext-enable xdebug
+
 COPY docker/php/php.ini /usr/local/etc/php/conf.d/99-app.ini
 
-# PHP-FPM roda como usuário não-root via Compose. O PID fica em /tmp.
+# Configuração específica do Xdebug.
+COPY docker/php/xdebug.ini /usr/local/etc/php/conf.d/zz-xdebug.ini
+
 RUN sed -i 's|^;pid =.*|pid = /tmp/php-fpm.pid|' /usr/local/etc/php-fpm.conf
 
 WORKDIR /var/www/html

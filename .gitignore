@@ -1,3 +1,4 @@
 .env
 /src/.env
 /src/.php-cs-fixer.cache
+.vscode
