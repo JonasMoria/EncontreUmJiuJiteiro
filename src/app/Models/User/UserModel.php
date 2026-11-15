@@ -2,6 +2,8 @@
 
 namespace App\Models\User;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -36,5 +38,13 @@ class UserModel extends Authenticatable {
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function athleticProfile(): HasOne {
+        return $this->hasOne(UserAthleticProfile::class, 'user_id');
+    }
+
+    public function trainingLocals(): HasMany {
+        return $this->hasMany(UserTrainingLocal::class, 'user_id');
     }
 }
