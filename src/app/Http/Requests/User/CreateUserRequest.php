@@ -4,6 +4,7 @@ namespace App\Http\Requests\User;
 
 use App\Http\Requests\AppFormRequest;
 use App\Rules\StrongPasswordRule;
+use Illuminate\Validation\Rule;
 
 class CreateUserRequest extends AppFormRequest {
     public function authorize(): bool {
@@ -22,6 +23,7 @@ class CreateUserRequest extends AppFormRequest {
                 'required',
                 'email',
                 'max:255',
+                Rule::unique('users', 'email'),
             ],
             'password' => [
                 'required',
@@ -39,6 +41,7 @@ class CreateUserRequest extends AppFormRequest {
             'name.max' => 'FORM.CLIENT.NAME.MAX',
             'email.email' => 'FORM.CLIENT.EMAIL.INVALID',
             'email.max' => 'FORM.CLIENT.EMAIL.MAX',
+            'email.unique' => 'FORM.CLIENT.EMAIL.ALREADY.EXISTS',
             'password.required' => 'FORM.USER.PASSWORD.REQUIRED',
             'password.string' => 'FORM.USER.PASSWORD.STRING',
         ];
