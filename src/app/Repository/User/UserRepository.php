@@ -15,4 +15,9 @@ class UserRepository {
             'password' => $userDto->getPassword(),
         ]);
     }
+
+    public function findByEmail(string $email): ?UserModel {
+        return UserModel::where('email', $email)
+            ->first();
+    }
 }
