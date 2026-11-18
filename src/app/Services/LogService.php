@@ -20,4 +20,14 @@ class LogService {
             ]),
         );
     }
+
+    public function logWarning(
+        string $message,
+        array $context = [],
+    ): void {
+        Log::warning(
+            $message,
+            $context
+        );
+    }
 }
