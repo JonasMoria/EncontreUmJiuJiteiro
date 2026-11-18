@@ -40,10 +40,16 @@ class UserModel extends Authenticatable {
         ];
     }
 
+    /**
+     * @return HasOne<UserAthleticProfile, $this>
+     */
     public function athleticProfile(): HasOne {
         return $this->hasOne(UserAthleticProfile::class, 'user_id');
     }
 
+    /**
+     * @return HasMany<UserTrainingLocal, $this>
+     */
     public function trainingLocals(): HasMany {
         return $this->hasMany(UserTrainingLocal::class, 'user_id');
     }
