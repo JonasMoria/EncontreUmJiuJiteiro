@@ -14,6 +14,7 @@ final readonly class CreateAthleticProfileDTO {
         private Gender $gender,
         private BeltCategory $beltCategory,
         private WeightCategory $weightCategory,
+        private ?float $weight,
         private ?UploadedFile $avatar = null
     ) {
     }
@@ -23,6 +24,7 @@ final readonly class CreateAthleticProfileDTO {
             birthDate: CarbonImmutable::parse($data['birthdate']),
             gender: Gender::from($data['gender']),
             beltCategory: BeltCategory::from($data['belt_category']),
+            weight: $data['weight'] ?? null,
             weightCategory: WeightCategory::from($data['weight_category']),
             avatar: $data['avatar'] ?? null
         );
@@ -38,6 +40,10 @@ final readonly class CreateAthleticProfileDTO {
 
     public function getBeltCategory(): BeltCategory {
         return $this->beltCategory;
+    }
+
+    public function getWeight(): ?float {
+        return $this->weight;
     }
 
     public function getWeightCategory(): WeightCategory {

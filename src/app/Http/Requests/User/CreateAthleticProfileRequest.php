@@ -28,6 +28,12 @@ class CreateAthleticProfileRequest extends FormRequest {
                 'required',
                 Rule::enum(BeltCategory::class),
             ],
+            'weight' => [
+                'nullable',
+                'numeric',
+                'decimal:1,2',
+                'min:1',
+            ],
             'weight_category' => [
                 'required',
                 Rule::enum(WeightCategory::class),
@@ -50,6 +56,9 @@ class CreateAthleticProfileRequest extends FormRequest {
             'gender.enum' => 'FORM.USER.PROFILE.GENDER.INVALID',
             'belt_category.required' => 'FORM.USER.PROFILE.BELT_CATEGORY.REQUIRED',
             'belt_category.enum' => 'FORM.USER.PROFILE.BELT_CATEGORY.INVALID',
+            'weight.numeric' => 'FORM.USER.PROFILE.WEIGHT.INVALID',
+            'weight.decimal' => 'FORM.USER.PROFILE.WEIGHT.VALUE.INVALID',
+            'weight.min' => 'FORM.USER.PROFILE.WEIGHT.MIN.INVALID',
             'weight_category.required' => 'FORM.USER.PROFILE.WEIGHT_CATEGORY.REQUIRED',
             'weight_category.enum' => 'FORM.USER.PROFILE.WEIGHT_CATEGORY.INVALID',
             'avatar.image' => 'FORM.USER.PROFILE.AVATAR.IMAGE',

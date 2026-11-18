@@ -18,6 +18,7 @@ class CreateAthleticProfileRequestTest extends TestCase {
             'birthdate' => CarbonImmutable::now()->subYears(20)->toDateString(),
             'gender' => Gender::cases()[0]->value,
             'belt_category' => BeltCategory::cases()[0]->value,
+            'weight' => 58.99,
             'weight_category' => WeightCategory::cases()[0]->value,
         ];
 
@@ -98,6 +99,42 @@ class CreateAthleticProfileRequestTest extends TestCase {
             'Faixa inválida' => [
                 ['belt_category' => 'INVALID'],
                 'belt_category',
+            ],
+
+            // Weight
+            'Peso não informado' => [
+                ['weight' => null],
+                'weight',
+            ],
+
+            'Peso vazio' => [
+                ['weight' => ''],
+                'weight',
+            ],
+
+            'Peso não numérico' => [
+                ['weight' => 'abc'],
+                'weight',
+            ],
+
+            'Peso com caracteres especiais' => [
+                ['weight' => '75kg'],
+                'weight',
+            ],
+
+            'Peso com três casas decimais' => [
+                ['weight' => '75.555'],
+                'weight',
+            ],
+
+            'Peso abaixo do mínimo' => [
+                ['weight' => '0.5'],
+                'weight',
+            ],
+
+            'Peso negativo' => [
+                ['weight' => '-10'],
+                'weight',
             ],
 
             // Weight category
