@@ -9,16 +9,17 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property int $id
+ * @property int $user_id
+ * @property Carbon $birthdate
+ * @property Gender $gender
+ * @property BeltCategory $belt_category
+ * @property WeightCategory $weight_category
+ * @property numeric-string|null $weight_kg
+ * @property string|null $avatar_path
+ */
 class UserAthleticProfile extends Model {
-    public int $id;
-    public int $user_id;
-    public Carbon $birthdate;
-    public Gender $gender;
-    public BeltCategory $beltCategory;
-    public WeightCategory $weightCategory;
-    public ?string $weightKg;
-    public ?string $avatarPath;
-
     protected $table = 'users_athletic_profile';
     protected $fillable = [
         'birthdate',
