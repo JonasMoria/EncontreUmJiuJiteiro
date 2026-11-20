@@ -7,6 +7,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -30,6 +31,16 @@ return Application::configure(basePath: dirname(__DIR__))
             return HttpResponse::makeResponse(
                 $exception->getMessage(),
                 HttpStatusCode::from($exception->getCode())
+            );
+        });
+
+        $exceptions->render(function (
+            RouteNotFoundException $exception,
+            Request $request
+        ) {
+            return HttpResponse::makeResponse(
+                'USER.UNAUTHENTICATED',
+                HttpStatusCode::UNAUTHORIZED
             );
         });
     })->create();
