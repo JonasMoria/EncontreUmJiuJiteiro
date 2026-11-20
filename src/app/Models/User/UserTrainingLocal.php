@@ -6,24 +6,25 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
+/**
+ *  @property int $id;
+ *  @property int $userId;
+ *  @property string $name;
+ *  @property string $address;
+ *  @property string|null $number;
+ *  @property string|null $complement;
+ *  @property string|null $neighborhood;
+ *  @property string $city;
+ *  @property string $state;
+ *  @property string $country;
+ *  @property string $postalCode;
+ *  @property string $latitude;
+ *  @property string $longitude;
+ *  @property Carbon|null $createdAt;
+ *  @property Carbon|null $updatedAt;
+ *  @property Carbon|null $deletedAt;
+ */
 class UserTrainingLocal extends Model {
-    public int $id;
-    public int $userId;
-    public string $name;
-    public string $address;
-    public ?string $number;
-    public ?string $complement;
-    public ?string $neighborhood;
-    public string $city;
-    public string $state;
-    public string $country;
-    public ?string $postalCode;
-    public string $latitude;
-    public string $longitude;
-    public ?Carbon $createdAt;
-    public ?Carbon $updatedAt;
-    public ?Carbon $deletedAt;
-
     protected $table = 'users_training_local';
     protected $fillable = [
         'name',
