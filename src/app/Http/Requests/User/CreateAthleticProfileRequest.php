@@ -5,10 +5,10 @@ namespace App\Http\Requests\User;
 use App\Enums\BeltCategory;
 use App\Enums\Gender;
 use App\Enums\WeightCategory;
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\AppFormRequest;
 use Illuminate\Validation\Rule;
 
-class CreateAthleticProfileRequest extends FormRequest {
+class CreateAthleticProfileRequest extends AppFormRequest {
     public function authorize(): bool {
         return true;
     }
