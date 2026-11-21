@@ -3,6 +3,7 @@
 namespace App\Models\User;
 
 use App\Collections\User\UserTrainingLocalCollection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
@@ -27,6 +28,8 @@ use Override;
  *  @property Carbon|null $deletedAt;
  */
 class UserTrainingLocal extends Model {
+    use HasFactory;
+
     protected $table = 'users_training_local';
     protected $fillable = [
         'name',
