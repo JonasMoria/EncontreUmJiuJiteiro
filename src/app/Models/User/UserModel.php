@@ -2,6 +2,7 @@
 
 namespace App\Models\User;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -19,6 +20,7 @@ use Laravel\Sanctum\HasApiTokens;
 class UserModel extends Authenticatable {
     use HasApiTokens;
     use Notifiable;
+    use HasFactory;
 
     protected $table = 'users';
 
