@@ -6,10 +6,12 @@ use App\Collections\User\UserTrainingLocalCollection;
 use App\Http\Enums\HttpStatusCode;
 use App\Http\Exceptions\AppRuntimeException;
 use App\Interfaces\Cache\CacheInterface;
+use App\Interfaces\Geo\GeoSearchInterface;
 use App\Mappers\Cache\UserProfileCacheMapper;
 use App\Models\User\UserAthleticProfile;
 use App\Models\User\UserModel;
 use App\Repository\Cache\RedisCacheRepository;
+use App\Repository\Geo\RedisGeoSearchRepository;
 use App\Repository\User\UserAthleticProfileRepository;
 use App\Repository\User\UserTrainingLocalRepository;
 
@@ -17,15 +19,18 @@ class ProfileCacheManager {
     private UserAthleticProfileRepository $userAthleticProfileRepository;
     private UserTrainingLocalRepository $userTrainingLocalRepository;
     private CacheInterface $cacheManagerRepository;
+    private GeoSearchInterface $geoSearchRepository;
 
     public function __construct(
         ?UserAthleticProfileRepository $userAthleticProfileRepository,
         ?UserTrainingLocalRepository $userTrainingLocalRepository,
-        ?CacheInterface $cacheManagerRepository
+        ?CacheInterface $cacheManagerRepository,
+        ?GeoSearchInterface $geoSearchRepository
     ) {
         $this->userAthleticProfileRepository = $userAthleticProfileRepository ?? new UserAthleticProfileRepository();
         $this->userTrainingLocalRepository = $userTrainingLocalRepository ?? new UserTrainingLocalRepository();
         $this->cacheManagerRepository = $cacheManagerRepository ?? new RedisCacheRepository();
+        $this->geoSearchRepository = $geoSearchRepository ?? new RedisGeoSearchRepository();
     }
 
     public function saveProfile(UserModel $user): bool {
@@ -39,10 +44,17 @@ class ProfileCacheManager {
             $trainingLocals
         );
 
-        return $this->cacheManagerRepository->save(
+        $cached = $this->cacheManagerRepository->save(
             $key,
             $payload
         );
+
+        if (!$cached) {
+            return false;
+        }
+
+        $this->indexTrainingLocals($user->id, $trainingLocals);
+        return true;
     }
 
     protected function getAthleticProfile(UserModel $user): UserAthleticProfile {
@@ -71,5 +83,24 @@ class ProfileCacheManager {
 
     protected function buildKey(int $userId): string {
         return "user:profile:{$userId}";
+    }
+
+    protected function indexTrainingLocals(
+        int $userId,
+        UserTrainingLocalCollection $trainingLocals
+    ): void {
+        foreach ($trainingLocals as $trainingLocal) {
+            $member = sprintf(
+                'user:%d:local:%d',
+                $userId,
+                $trainingLocal->id
+            );
+
+            $this->geoSearchRepository->add(
+                $member,
+                (float) $trainingLocal->longitude,
+                (float) $trainingLocal->latitude
+            );
+        }
     }
 }

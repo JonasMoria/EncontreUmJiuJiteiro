@@ -3,11 +3,13 @@
 namespace App\Providers;
 
 use App\Interfaces\Cache\CacheInterface;
+use App\Interfaces\Geo\GeoSearchInterface;
 use App\Models\User\UserAthleticProfile;
 use App\Models\User\UserTrainingLocal;
 use App\Observers\User\UserAthleticProfileObserver;
 use App\Observers\User\UserTrainingLocalObserver;
 use App\Repository\Cache\RedisCacheRepository;
+use App\Repository\Geo\RedisGeoSearchRepository;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider {
@@ -18,6 +20,10 @@ class AppServiceProvider extends ServiceProvider {
         $this->app->bind(
             CacheInterface::class,
             RedisCacheRepository::class
+        );
+        $this->app->bind(
+            GeoSearchInterface::class,
+            RedisGeoSearchRepository::class
         );
     }
 
