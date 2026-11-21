@@ -2,6 +2,7 @@
 
 namespace App\Repository\User;
 
+use App\Collections\User\UserTrainingLocalCollection;
 use App\DTOs\User\CreateTrainingLocalDTO;
 use App\Models\User\UserModel;
 use App\Models\User\UserTrainingLocal;
@@ -24,5 +25,9 @@ class UserTrainingLocalRepository {
             'latitude' => $trainingLocal->getLatitude(),
             'longitude' => $trainingLocal->getLongitude(),
         ]);
+    }
+
+    public function getAll(UserModel $user): UserTrainingLocalCollection {
+        return $user->trainingLocals()->get();
     }
 }

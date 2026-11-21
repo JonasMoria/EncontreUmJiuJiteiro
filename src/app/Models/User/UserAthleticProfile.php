@@ -40,6 +40,9 @@ class UserAthleticProfile extends Model {
         ];
     }
 
+    /**
+     * @return BelongsTo<UserModel, $this>
+     */
     public function user(): BelongsTo {
         return $this->belongsTo(UserModel::class, 'user_id');
     }

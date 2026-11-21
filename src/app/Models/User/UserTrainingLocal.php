@@ -2,9 +2,11 @@
 
 namespace App\Models\User;
 
+use App\Collections\User\UserTrainingLocalCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
+use Override;
 
 /**
  *  @property int $id;
@@ -50,7 +52,18 @@ class UserTrainingLocal extends Model {
         'deleted_at' => 'datetime',
     ];
 
+    /**
+     * @return BelongsTo<UserModel, $this>
+     */
     public function user(): BelongsTo {
         return $this->belongsTo(UserModel::class, 'user_id');
+    }
+
+    /**
+     * @param array<int, UserTrainingLocal> $models
+     */
+    #[Override]
+    public function newCollection(array $models = []): UserTrainingLocalCollection {
+        return new UserTrainingLocalCollection($models);
     }
 }

@@ -27,4 +27,8 @@ class UserAthleticProfileRepository {
 
         return $affectedRows > 0;
     }
+
+    public function getProfile(UserModel $user): ?UserAthleticProfile {
+        return $user->athleticProfile()->first();
+    }
 }
